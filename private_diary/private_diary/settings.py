@@ -11,9 +11,12 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
+#BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -37,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'dairy.apps.DiaryConfig',
+    'diary.apps.DiaryConfig',
 ]
 
 MIDDLEWARE = [
@@ -119,6 +122,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_DIRS = (
+    os.path.join(BASE_DIR,'static'),
+)
 
 #ロギング設定
 LOGING = {
@@ -133,41 +139,30 @@ LOGING = {
             'level':'INFO',
         },
         #diaryアプリが利用するロガー
+        'diary':{
             'handlers':['console'],
             'level':'DEBUG',
         },
     },
 
-#ハンドラの設定
-'handlers':{
-    'console':{
-        'level':'DEBUG',
-        'class':'logging.StreamHandler',
-        'formatter':'dav'
+    #ハンドラの設定
+    'handlers':{
+        'console':{
+            'level':'DEBUG',
+            'class':'logging.StreamHandler',
+            'formatter':'dev'
+        },
     },
-},
 
-#フォーマッタの設定
-'formatters':{
-    'dev':{
-        'format':'\t'.join([
-            '%(asctime)s',
-            '[%(levelname)s]',
-            '%(pathname)s(Line:%(lineno)d)'
-            '%(message)s'
-        ])
-    },
-}        
-
-
-        }
-    }
-}
-
-    }
-}
-
-
-
-
+    #フォーマッタの設定
+    'formatters':{
+        'dev':{
+            'format':'\t'.join([
+                '%(asctime)s',
+                '[%(levelname)s]',
+                '%(pathname)s(Line:%(lineno)d)',
+                '%(message)s'
+            ])
+        },
+    }        
 }
